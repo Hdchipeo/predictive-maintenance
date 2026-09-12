@@ -1,0 +1,172 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "Equipment Health Overview",
+      "type": "row"
+    },
+    {
+      "id": 1,
+      "title": "Average Equipment Health Score",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 1 },
+      "datasource": "InfluxDB-Flux",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "#EAB839", "value": 25 },
+              { "color": "green", "value": 60 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"turbofan_telemetry\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"engine_health\")\n  |> filter(fn: (r) => r[\"_field\"] == \"health_score\")\n  |> mean()",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Critical Engines (RUL <= 20 cycles)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 1 },
+      "datasource": "InfluxDB-Flux",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"turbofan_telemetry\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"engine_health\")\n  |> filter(fn: (r) => r[\"status\"] == \"CRITICAL\")\n  |> count()",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Minimum Fleet RUL",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 1 },
+      "datasource": "InfluxDB-Flux",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "cycles",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"turbofan_telemetry\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"engine_health\")\n  |> filter(fn: (r) => r[\"_field\"] == \"predicted_rul\")\n  |> min()",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Active Telemetry Stream Events",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 1 },
+      "datasource": "InfluxDB-Flux",
+      "targets": [
+        {
+          "query": "from(bucket: \"turbofan_telemetry\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"engine_health\")\n  |> filter(fn: (r) => r[\"_field\"] == \"predicted_rul\")\n  |> count()",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 7 },
+      "id": 101,
+      "title": "RUL Degradation & Sensor Dynamics",
+      "type": "row"
+    },
+    {
+      "id": 5,
+      "title": "Real-Time Predicted Remaining Useful Life (RUL)",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 8 },
+      "datasource": "InfluxDB-Flux",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2
+          },
+          "unit": "cycles"
+        }
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"turbofan_telemetry\")\n  |> range(start: -15m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"engine_health\")\n  |> filter(fn: (r) => r[\"_field\"] == \"predicted_rul\")\n  |> yield(name: \"rul\")",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Core Temperature Sensors (Sensor 2, 3, 4)",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 8 },
+      "datasource": "InfluxDB-Flux",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1
+          }
+        }
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"turbofan_telemetry\")\n  |> range(start: -15m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"engine_health\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sensor_2\" or r[\"_field\"] == \"sensor_3\" or r[\"_field\"] == \"sensor_4\")\n  |> yield(name: \"sensors\")",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["predictive-maintenance", "turbofan", "spark", "kafka"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": { "refresh_intervals": ["1s", "5s", "10s", "30s", "1m"] },
+  "timezone": "browser",
+  "title": "NASA Turbofan Predictive Maintenance & RUL Monitor",
+  "uid": "predmaint-rul-v1",
+  "version": 1
+}

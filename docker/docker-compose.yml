@@ -1,0 +1,121 @@
+version: '3.8'
+
+networks:
+  predmaint-net:
+    driver: bridge
+
+volumes:
+  kafka-data:
+  influxdb-data:
+  grafana-data:
+
+services:
+  # -------------------------------------------------------------
+  # Message Broker: Zookeeper & Apache Kafka
+  # -------------------------------------------------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: predmaint-zookeeper
+    networks:
+      - predmaint-net
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: predmaint-kafka
+    networks:
+      - predmaint-net
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+  # -------------------------------------------------------------
+  # Time-Series Storage: InfluxDB v2
+  # -------------------------------------------------------------
+  influxdb:
+    image: influxdb:2.7
+    container_name: predmaint-influxdb
+    networks:
+      - predmaint-net
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: predmaint_password_2026
+      DOCKER_INFLUXDB_INIT_ORG: predmaint_org
+      DOCKER_INFLUXDB_INIT_BUCKET: turbofan_telemetry
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: predmaint-secret-admin-token-2026
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+
+  # -------------------------------------------------------------
+  # Real-time Visual Dashboard: Grafana
+  # -------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: predmaint-grafana
+    networks:
+      - predmaint-net
+    depends_on:
+      - influxdb
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+  # -------------------------------------------------------------
+  # Distributed Engine: Apache Spark Master & Worker
+  # -------------------------------------------------------------
+  spark-master:
+    image: bitnami/spark:3.5.1
+    container_name: predmaint-spark-master
+    networks:
+      - predmaint-net
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+
+  spark-worker:
+    image: bitnami/spark:3.5.1
+    container_name: predmaint-spark-worker-1
+    networks:
+      - predmaint-net
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no

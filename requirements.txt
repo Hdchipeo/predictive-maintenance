@@ -1,0 +1,11 @@
+# Big Data Predictive Maintenance Requirements
+pandas>=2.2.0
+numpy>=1.26.0
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+pyspark>=3.5.0
+kafka-python-ng>=2.2.2
+influxdb-client>=1.40.0
+pyarrow>=15.0.0
+requests>=2.31.0
+pytest>=8.0.0

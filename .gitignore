@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# Testing & Caching
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Spark & Streaming Runtime Checkpoints
+checkpoints/
+metastore_db/
+derby.log
+spark-warehouse/
+
+# Model Weights (exclude heavy 65MB RF binary, retain metadata and lightweight 1.3MB XGBoost artifact)
+models/rf_rul_v1.0/model.joblib
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+*.swp

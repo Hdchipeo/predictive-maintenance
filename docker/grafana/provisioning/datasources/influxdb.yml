@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB-Flux
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: predmaint_org
+      defaultBucket: turbofan_telemetry
+    secureJsonData:
+      token: predmaint-secret-admin-token-2026
+    isDefault: true
+    editable: false
