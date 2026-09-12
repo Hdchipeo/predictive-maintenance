@@ -1,8 +1,8 @@
 <div align="center">
 
-  <h1>Kien Truc Big Data Xu Ly Dong Thoi Gian Thuc Du Doan Thoi Gian Song Con (RUL) Va Bao Tri Du Doan Thiet Bi</h1>
+  <h1>Kiến Trúc Big Data Xử Lý Dòng Thời Gian Thực Dự Đoán Thời Gian Sống Còn (RUL) Và Bảo Trì Dự Đoán Thiết Bị</h1>
 
-  <h3>Xu Ly Phan Tan Luong Du Lieu · Trich Xuat Dac Trung Chuoi Thoi Gian Truc Tuyen · Phan Tich Tu Bien Den Dam May</h3>
+  <h3>Xử Lý Dòng Dữ Liệu Phân Tán · Trích Xuất Đặc Trưng Chuỗi Thời Gian Trực Tuyến · Phân Tích Từ Biên Đến Đám Mây</h3>
 
   <p>
     <a href="https://www.python.org/downloads/release/python-3120/">
@@ -25,19 +25,21 @@
     </a>
   </p>
 
-  <a href="#tom-tat">Tom tat</a>
+  <a href="#tóm-tắt">Tóm tắt</a>
   |
-  <a href="#kien-truc-he-thong">Kien truc he thong</a>
+  <a href="#kiến-trúc-hệ-thống">Kiến trúc hệ thống</a>
   |
-  <a href="#co-so-ly-thuyet">Co so ly thuyet</a>
+  <a href="#tính-năng-cốt-lõi">Tính năng cốt lõi</a>
   |
-  <a href="#danh-gia-thuc-nghiem">Danh gia thuc nghiem</a>
+  <a href="#cơ-sở-lý-thuyết">Cơ sở lý thuyết</a>
   |
-  <a href="#huong-dan-trien-khai">Huong dan trien khai</a>
+  <a href="#đánh-giá-thực-nghiệm">Đánh giá thực nghiệm</a>
   |
-  <a href="#cau-truc-du-an">Cau truc du an</a>
+  <a href="#hướng-dẫn-triển-khai">Hướng dẫn triển khai</a>
   |
-  <a href="#tai-lieu-tham-khao">Tai lieu tham khao</a>
+  <a href="#cấu-trúc-dự-án">Cấu trúc dự án</a>
+  |
+  <a href="#tài-liệu-tham-khảo">Tài liệu tham khảo</a>
   |
   <a href="./README.md">English</a>
 
@@ -45,25 +47,25 @@
 
 ---
 
-## Tom tat
+## Tóm tắt
 
-Trong cac moi truong Internet van vat cong nghiep (Industrial IoT), cac chuoi cam bien da chieu duoc san sinh lien tuc voi dac tinh suy thoai phi tuyen tinh cung nhu muc do nhieu tin hieu phuc tap. Cac phuong phap bao tri truyen thong—bao tri sua chua khi xay ra hong hoc hoac bao tri phong ngua dinh ky—thuong phat sinh chi phi tai chinh lon, gay gian doan hoat dong ngoai du kien hoac thay the linh kien qua som khi van con kha nang su dung.
+Trong các môi trường Internet vạn vật công nghiệp (Industrial IoT), chuỗi tín hiệu cảm biến đa chiều được thu thập liên tục với đặc tính suy thoái phi tuyến tính và mức độ nhiễu tín hiệu phức tạp. Các phương pháp bảo trì truyền thống—bảo trì phục hồi sau sự cố hoặc bảo trì phòng ngừa theo định kỳ cố định—thường làm phát sinh tổn thất kinh tế nghiêm trọng, đình trệ dây chuyền vận hành ngoài kế hoạch hoặc thay thế phụ tùng quá sớm khi linh kiện vẫn còn khả năng hoạt động an toàn.
 
-Du an nay de xuat mot kien truc Big Data phan tan, co kha nang chiu loi cao, duoc thiet ke de du doan Thoi gian song con lai (Remaining Useful Life - RUL) va danh gia trang thai suc khoe thiet bi theo thoi gian thuc. Su dung tap du lieu mo phong suy thoai dong co phan luc NASA C-MAPSS (Commercial Modular Aero-Propulsion System Simulation), he thong ket hop co che tiep nhan du lieu bang Apache Kafka voi cong cu xu ly phan tan Apache Spark Structured Streaming. Quy trinh tinh toan thuc hien cac phep bien doi dac trung dong hoc truot tren bo nho dem thoi gian thuc (gia tri trung binh truot, do lech chuan truot va xu huong bien thien) tren cac cua so thoi gian da quy mo, sau do ap dung mo hinh hoi quy Gradient Boosting (XGBoost) duoc vector hoa thong qua Apache Arrow. Ket qua du doan va phan loai trang thai duoc dua vao co so du lieu chuoi thoi gian InfluxDB va truc quan hoa tren bang dieu khien Grafana voi do tre thap.
+Công trình này giới thiệu một kiến trúc Dữ liệu lớn (Big Data) phân tán, có khả năng chịu lỗi cao, được thiết kế chuyên biệt nhằm giải quyết bài toán dự đoán Thời gian sống còn lại (Remaining Useful Life - RUL) và giám sát trạng thái sức khỏe thiết bị gần thời gian thực. Ứng dụng bộ dữ liệu mô phỏng suy thoái động cơ phản lực cánh quạt NASA C-MAPSS (Commercial Modular Aero-Propulsion System Simulation), nền tảng kết hợp đường ống tiếp nhận dữ liệu thời gian thực Apache Kafka với công cụ tính toán phân tán Apache Spark Structured Streaming. Luồng xử lý tính toán thực hiện các phép biến đổi đặc trưng động học trượt trên bộ đệm bộ nhớ trực tuyến (giá trị trung bình trượt, độ lệch chuẩn trượt và tốc độ suy thoái cục bộ) trên các cửa sổ thời gian đa quy mô, sau đó áp dụng mô hình hồi quy Gradient Boosting (XGBoost) được vector hóa thông qua Apache Arrow. Các quỹ đạo suy thoái và phân loại cấp độ cảnh báo được lưu trữ tối ưu trong hệ thống cơ sở dữ liệu chuỗi thời gian InfluxDB và trực quan hóa tức thời trên giao diện điều khiển Grafana.
 
 ---
 
-## Kien truc he thong
+## Kiến trúc hệ thống
 
-Quy trinh xu ly dau-cuoi duoc tach biet thanh cac tang chuc nang doc lap nham dam bao tinh mo-dun va kha nang mo rong:
+Quy trình xử lý dữ liệu đầu-cuối được phân tách thành các tầng chức năng độc lập nhằm bảo đảm tính mô-đun hóa, khả năng mở rộng quy mô và khả năng chịu lỗi:
 
 ```
-                  Du lieu Cam bien NASA C-MAPSS (FD001)
+                  Dữ liệu Cảm biến NASA C-MAPSS (FD001)
                                      |
                                      v
-                       [Module Replay Phat Streaming]
+                       [Mô-đun Replay Phát Streaming]
                                      |
-                                     | (Luong JSON phan vung, 10-5000 msg/s)
+                                     | (Luồng JSON phân vùng, 10-5000 msg/s)
                                      v
                        [Apache Kafka Message Broker]
                          Topic: engine_sensor_raw
@@ -71,67 +73,67 @@ Quy trinh xu ly dau-cuoi duoc tach biet thanh cac tang chuc nang doc lap nham da
                                      v
                    [Apache Spark Structured Streaming]
               +-----------------------------------------------+
-              |  - Kiem dinh Schema va loai bo Sensor hang so |
-              |  - Bo dem truot trang thai rieng tung Dong co |
-              |  - Trich xuat dac trung chuoi thoi gian da cap|
-              |  - Suy luan vector hoa bang XGBoost va Arrow  |
-              |  - Tinh toan Health Score va phan cap canh bao|
+              |  - Kiểm định Schema và lọc bỏ Cảm biến hằng số|
+              |  - Bộ đệm trượt trạng thái riêng từng Động cơ |
+              |  - Trích xuất đặc trưng chuỗi thời gian đa cấp|
+              |  - Suy luận vector hóa với XGBoost và Arrow   |
+              |  - Tính toán Health Score và phân cấp cảnh báo|
               +-----------------------------------------------+
                                      |
                                      v
-                    [Co so du lieu chuoi thoi gian InfluxDB v2]
+                    [Cơ sở dữ liệu chuỗi thời gian InfluxDB v2]
                        Bucket: turbofan_telemetry
                                      |
                                      v
-                     [Bang dieu khien giam sat Grafana]
-        (Tong quan ham doi, Duong cong suy thoai RUL, Chi so cam bien)
+                     [Bảng điều khiển giám sát Grafana]
+        (Tổng quan hạm đội, Đường cong suy thoái RUL, Chỉ số cảm biến)
 ```
 
 ---
 
-## Tinh nang cot loi
+## Tính năng cốt lõi
 
 <table align="center">
   <tr>
-    <th><div align="center"> Xu ly phan tan dong du lieu </div></th>
-    <th><div align="center"> Kho dac trung trang thai truc tuyen </div></th>
+    <th><div align="center"> Xử lý dòng dữ liệu phân tán </div></th>
+    <th><div align="center"> Kho đặc trưng trạng thái trực tuyến </div></th>
   </tr>
   <tr>
     <td>
       <div align="center">
-        Dieu phoi streaming theo co che micro-batch qua Apache Spark Structured Streaming
+        Điều phối xử lý streaming theo mô hình vi lô (micro-batch) qua Apache Spark Structured Streaming
         <br />
-        Bao toan ngu nghia xu ly exactly-once nho co che luu checkpoint phan tan
+        Bảo đảm ngữ nghĩa tính toán chính xác một lần (exactly-once) dựa trên cơ chế checkpointing phân tán
       </div>
     </td>
     <td>
       <div align="center">
-        Bo dem truot luu tru trang thai trong bo nho cho tung thiet bi rieng biet
+        Duy trì bộ đệm trượt trong bộ nhớ độc lập cho từng thực thể thiết bị
         <br />
-        Tinh toan tong hop da cua so ma khong gay ro ri du lieu giua cac thiet bi
+        Tính toán tổng hợp thống kê đa cửa sổ mà không gây rò rỉ dữ liệu chéo giữa các động cơ
       </div>
     </td>
   </tr>
   <tr>
-    <td colspan="2"><!-- spacer row --></td>
+    <td colspan="2"><!-- khoảng cách hàng --></td>
   </tr>
   <tr>
-    <th><div align="center"> Suy luan vector hoa toc do cao </div></th>
-    <th><div align="center"> He thong luu tru chuoi thoi gian </div></th>
+    <th><div align="center"> Suy luận vector hóa hiệu năng cao </div></th>
+    <th><div align="center"> Hạ tầng lưu trữ chuỗi thời gian </div></th>
   </tr>
   <tr>
     <td>
       <div align="center">
-        Loai bo chi phi tuan tu hoa IPC nho Apache Arrow va Pandas UDF vector hoa
+        Triệt tiêu chi phí tuần tự hóa IPC nhờ Apache Arrow và Vectorized Pandas UDF
         <br />
-        Do tre suy luan dat 0.0007 ms tren moi ban ghi du lieu cam bien
+        Độ trễ suy luận đạt 0.0007 ms trên mỗi bản ghi, tương đương 1.4 triệu sự kiện/giây
       </div>
     </td>
     <td>
       <div align="center">
-        Luu tru toi uu hoa va co che Write-Ahead Logging voi InfluxDB v2
+        Lưu trữ nén dữ liệu thời gian thực và ghi nhật ký tuần tự (WAL) với InfluxDB v2
         <br />
-        Tu dong provisioning bang dieu khien Grafana de giam sat ham doi
+        Tự động cấu hình bảng điều khiển Grafana phục vụ giám sát toàn diện tình trạng hạm đội
       </div>
     </td>
   </tr>
@@ -139,100 +141,100 @@ Quy trinh xu ly dau-cuoi duoc tach biet thanh cac tang chuc nang doc lap nham da
 
 ---
 
-## Co so ly thuyet
+## Cơ sở lý thuyết
 
-### 1. Mo hinh hoa Thoi gian song con lai (RUL)
+### 1. Mô hình hóa Thời gian sống còn lại (RUL)
 
-Doi voi mot dong co $i$ hoat dong qua cac chu ky kiem tra roi rac $t \in [1, T_i]$, trong do $T_i$ la chu ky hong hoc cuoi cung, gia tri RUL tuyen tinh duoc xac dinh boi cong thuc:
+Đối với một động cơ $i$ vận hành qua các chu kỳ kiểm tra rời rạc $t \in [1, T_i]$, trong đó $T_i$ đại diện cho chu kỳ xuất hiện hỏng hóc hoàn toàn, giá trị RUL tuyến tính lý thuyết được xác định bởi:
 
 $$RUL_{raw}(i, t) = T_i - t$$
 
-Nham han che viec phat sai so qua lon trong giai doan dong co con moi (khi cac dau hieu suy thoai chua xuat hien ro ret), ham chan tren piecewise linear voi nguong $RUL_{max} = 125$ chu ky duoc ap dung:
+Nhằm tránh việc phạt sai số quá mức trong giai đoạn đầu chu kỳ sống khi động cơ chưa xuất hiện dấu hiệu suy thoái vật lý, hàm chặn trên tuyến tính từng đoạn (piecewise linear bounding) với ngưỡng $RUL_{max} = 125$ chu kỳ được áp dụng:
 
 $$RUL(i, t) = \min\left(RUL_{raw}(i, t), RUL_{max}\right)$$
 
-### 2. Trich xuat dac trung chuoi thoi gian
+### 2. Trích xuất đặc trưng chuỗi thời gian
 
-Voi moi gia tri do $s_k(t)$ tu cam bien dong $k$ tai chu ky $t$, he thong thuc hien trich xuat dac trung da quy mo tren cac cua so quan sat qua khu $W \in \{10, 20\}$:
+Với mỗi tín hiệu đo $s_k(t)$ từ cảm biến biến thiên $k$ tại chu kỳ $t$, hệ thống trích xuất đặc trưng động học đa quy mô trên các cửa sổ trượt quá khứ $W \in \{10, 20\}$:
 
-* **Gia tri trung binh truot (Rolling Mean):**
+* **Giá trị trung bình trượt (Rolling Mean):**
 
 $$\mu_{k, W}(t) = \frac{1}{W} \sum_{\tau = 0}^{W-1} s_k(t - \tau)$$
 
-* **Do lech chuan truot (Rolling Standard Deviation):**
+* **Độ lệch chuẩn trượt (Rolling Standard Deviation):**
 
 $$\sigma_{k, W}(t) = \sqrt{\frac{1}{W-1} \sum_{\tau = 0}^{W-1} \left(s_k(t - \tau) - \mu_{k, W}(t)\right)^2}$$
 
-* **Do bien thien truot / Xu huong (Rolling Delta / Trend):**
+* **Độ biến thiên trượt / Xu hướng suy thoái (Rolling Delta / Trend):**
 
 $$\Delta_{k, W}(t) = s_k(t) - s_k(t - W)$$
 
-### 3. Tinh toan Diem suc khoe (Health Score) va Phan cap trang thai
+### 3. Tính toán Điểm sức khỏe (Health Score) và Phân cấp cảnh báo
 
-Trang thai hoat dong cua thiet bi duoc luong hoa thanh chi so Health Score lien tuc $H(t) \in [0.0, 100.0]$:
+Trạng thái vận hành của thiết bị được lượng hóa thành chỉ số Điểm sức khỏe liên tục $H(t) \in [0.0, 100.0]$:
 
 $$H(t) = 100.0 \times \min\left(\frac{\widehat{RUL}(t)}{RUL_{ref}}, 1.0\right)$$
 
-trong do $RUL_{ref} = 125.0$ chu ky. Cac phan cap canh bao duoc phan dinh theo cac nguong sau:
+trong đó $RUL_{ref} = 125.0$ chu kỳ chuẩn. Các phân cấp trạng thái vận hành được xác lập theo các ngưỡng quyết định sau:
 
-$$\text{Trang thai}(t) = \begin{cases} \text{HEALTHY}, & \text{neu } \widehat{RUL}(t) > 50 \\ \text{WARNING}, & \text{neu } 20 < \widehat{RUL}(t) \le 50 \\ \text{CRITICAL}, & \text{neu } \widehat{RUL}(t) \le 20 \end{cases}$$
+$$\text{Trạng thái}(t) = \begin{cases} \text{HEALTHY (Bình thường)}, & \text{khi } \widehat{RUL}(t) > 50 \\ \text{WARNING (Cảnh báo)}, & \text{khi } 20 < \widehat{RUL}(t) \le 50 \\ \text{CRITICAL (Nguy cấp)}, & \text{khi } \widehat{RUL}(t) \le 20 \end{cases}$$
 
-### 4. Ham mat mat phi doi xung (NASA PHM 2008 Scoring Function)
+### 4. Hàm tổn thất đánh giá phi đối xứng (NASA PHM 2008 Scoring Function)
 
-Trong van hanh thuc te, viec du doan RUL som hon thuc te (bao tri phong ngua som) it gay nguy hiem hon rat nhieu so voi du doan muon hon thuc te (nguy co gay tai nan do dong co hong dot ngot). Do do, ham danh gia phi doi xung duoc ap dung:
+Trong vận hành kỹ thuật hàng không, việc dự đoán RUL sớm hơn thực tế (bảo trì phòng ngừa sớm) ít gây rủi ro thảm họa hơn nhiều so với việc dự đoán muộn hơn thực tế (nguy cơ sự cố hỏng động cơ trong khi đang hoạt động). Do đó, hàm tính điểm tổn thất phi đối xứng được sử dụng làm thước đo chuẩn mực:
 
 $$d = \widehat{RUL} - RUL$$
 
-$$S = \sum_{j=1}^{N} s_j, \quad s_j = \begin{cases} \exp\left(-\frac{d_j}{13}\right) - 1, & \text{khi } d_j < 0 \text{ (Du doan som)} \\ \exp\left(\frac{d_j}{10}\right) - 1, & \text{khi } d_j \ge 0 \text{ (Du doan muon)} \end{cases}$$
+$$S = \sum_{j=1}^{N} s_j, \quad s_j = \begin{cases} \exp\left(-\frac{d_j}{13}\right) - 1, & \text{với } d_j < 0 \text{ (Dự đoán sớm)} \\ \exp\left(\frac{d_j}{10}\right) - 1, & \text{với } d_j \ge 0 \text{ (Dự đoán muộn)} \end{cases}$$
 
 ---
 
-## Danh gia thuc nghiem
+## Đánh giá thực nghiệm
 
-### So sanh hieu nang cac mo hinh hoc may
+### So sánh hiệu năng giữa các mô hình học máy
 
-Thuc nghiem doi sanh duoc tien hanh tren tap kiem thu NASA C-MAPSS FD001 (100 dong co, 108 dac trung chuoi thoi gian):
+Thực nghiệm đối sánh được thực hiện trên tập kiểm thử chuẩn NASA C-MAPSS FD001 (100 động cơ kiểm thử, 108 đặc trưng chuỗi thời gian):
 
-| Chi so danh gia | Random Forest (Baseline) | XGBoost (San pham) | Nhan xet chuyen sau |
+| Chỉ số đánh giá | Random Forest (Cơ sở) | XGBoost (Sản phẩm) | Phân tích chuyên sâu |
 | :--- | :--- | :--- | :--- |
-| Sai so tuyet doi trung binh (MAE) | 45.85 chu ky | 45.95 chu ky | Tuong duong (chenh lech < 0.2%) |
-| Can bac hai sai so trung binh (RMSE) | 58.48 chu ky | 58.49 chu ky | Do phan tan sai so tuong dong |
-| He so xac dinh (R²) | -0.8401 | -0.8406 | Do fit hoi quy co so |
-| Diem phat phi doi xung NASA PHM | 90,163,286.5 | 94,836,017.5 | Tong diem phat tren 100 thiet bi |
-| Thoi gian huan luyen (Wall-Clock) | 19.27 giay | 1.33 giay | XGBoost nhanh hon 14.5 lan |
-| Do tre suy luan tren mot mau | 0.0023 ms | 0.0007 ms | XGBoost co do tre thap hon 3.3 lan |
-| Dung luong file mo hinh sau dong goi | 65.0 MB | 1.3 MB | XGBoost nhe hon 50 lan, toi uu cho streaming |
+| Sai số tuyệt đối trung bình (MAE) | 45.85 chu kỳ | 45.95 chu kỳ | Tương đương (chênh lệch < 0.2%) |
+| Căn bậc hai sai số trung bình (RMSE) | 58.48 chu kỳ | 58.49 chu kỳ | Mức độ phân tán sai số tương đồng |
+| Hệ số xác định (R²) | -0.8401 | -0.8406 | Mức độ phù hợp hồi quy cơ sở |
+| Điểm phạt phi đối xứng NASA PHM | 90,163,286.5 | 94,836,017.5 | Tổng điểm phạt trên toàn bộ 100 thiết bị |
+| Thời gian huấn luyện (Wall-Clock) | 19.27 giây | 1.33 giây | XGBoost nhanh hơn 14.5 lần |
+| Độ trễ suy luận trên một mẫu dữ liệu | 0.0023 ms | 0.0007 ms | XGBoost có độ trễ thấp hơn 3.3 lần |
+| Dung lượng tệp mô hình sau đóng gói | 65.0 MB | 1.3 MB | XGBoost nhẹ hơn 50 lần, tối ưu cho phân tán |
 
-### Kiem chung suy luan chu ky suy thoai thuc te
+### Kiểm chứng suy luận trên chu kỳ suy thoai thực tế
 
-Ket qua kiem chung tren toan bo vong doi hoat dong cua dong co Engine #1 (tu chu ky 1 den chu ky hong 232):
+Kết quả kiểm chứng suy luận trên toàn bộ vòng đời suy thoái của động cơ Engine #1 (từ chu kỳ 1 đến chu kỳ dừng hoạt động 232):
 
 ```text
-Giai doan van hanh    Chu ky          RUL du doan       Health Score     Trang thai he thong
-Giai doan dau         Chu ky 1        125.00 chu ky     100.00%          HEALTHY (Xanh)
-Giai doan dau         Chu ky 3        101.19 chu ky      80.95%          HEALTHY (Xanh)
-Giai doan giua        Chu ky 121      116.39 chu ky      93.11%          HEALTHY (Xanh)
-Giai doan suy thoai   Chu ky 200       34.12 chu ky      27.30%          WARNING (Vang)
-Giai doan cuoi        Chu ky 228        5.26 chu ky       4.21%          CRITICAL (Do)
-Giai doan cuoi        Chu ky 230        3.01 chu ky       2.41%          CRITICAL (Do)
-Diem dung hoat dong   Chu ky 232        3.44 chu ky       2.75%          CRITICAL (Do)
+Giai đoạn vận hành     Chu kỳ         RUL dự đoán       Health Score     Trạng thái hệ thống
+Vận hành ban đầu       Chu kỳ 1       125.00 chu kỳ     100.00%          HEALTHY (Xanh lục)
+Vận hành ban đầu       Chu kỳ 3       101.19 chu kỳ      80.95%          HEALTHY (Xanh lục)
+Vận hành ổn định       Chu kỳ 121     116.39 chu kỳ      93.11%          HEALTHY (Xanh lục)
+Bắt đầu suy thoái      Chu kỳ 200      34.12 chu kỳ      27.30%          WARNING (Vàng)
+Suy thoái nghiêm trọng Chu kỳ 228       5.26 chu kỳ       4.21%          CRITICAL (Đỏ)
+Trước hỏng hóc         Chu kỳ 230       3.01 chu kỳ       2.41%          CRITICAL (Đỏ)
+Dừng hoạt động         Chu kỳ 232       3.44 chu kỳ       2.75%          CRITICAL (Đỏ)
 ```
 
-Mo hinh du doan chinh xac su co hong hoc trong pham vi sai so 0.44 chu ky truoc khi dong co dung han, cung cap du thoi gian de he thong kich hoat canh bao bao tri.
+Mô hình nhận diện chính xác thời điểm hỏng hóc với sai số chỉ 0.44 chu kỳ trước khi động cơ dừng hoàn toàn, tạo đủ thời gian cảnh báo phục vụ điều động kỹ thuật thay thế linh kiện.
 
 ---
 
-## Huong dan trien khai
+## Hướng dẫn triển khai
 
-### 1. Yeu cau he thong
+### 1. Yêu cầu hệ thống
 
-* He dieu hanh: Linux hoac macOS
-* Python 3.12
-* Docker va Docker Compose (phien ban 2.20 tro len)
+* Hệ điều hành: Linux hoặc macOS
+* Python 3.12 (khuyến nghị qua Homebrew hoặc pyenv)
+* Docker và Docker Compose (phiên bản 2.20 trở lên)
 
-### 2. Thiet lap moi truong lap trinh
+### 2. Thiết lập môi trường thực thi
 
-Sao chep repository va khoi tao moi truong ao Python:
+Sao chép kho mã nguồn và khởi tạo môi trường ảo Python:
 
 ```bash
 git clone https://github.com/Hdchipeo/predictive-maintenance.git
@@ -243,50 +245,50 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Huan luyen mo hinh va chay Benchmark
+### 3. Huấn luyện mô hình và Chạy đối sánh Benchmark
 
-Thuc hien toan bo quy trinh chuan bi du lieu, loai bo sensor hang so, trich xuat dac trung va danh gia mo hinh:
+Kích hoạt toàn bộ quy trình tải dữ liệu, lọc bỏ cảm biến bất biến, trích xuất đặc trưng và đánh giá mô hình:
 
 ```bash
 python -m src.benchmark.benchmark_runner
 ```
 
-File mo hinh sau khi huan luyen va ban mo ta metadata se duoc luu tai `models/xgboost_rul_v1.0/` va lien ket toi `models/latest/`.
+Các tệp mô hình đã huấn luyện và tệp kê khai siêu dữ liệu (metadata JSON) được tự động xuất bản tại `models/xgboost_rul_v1.0/` và liên kết biểu tượng tới `models/latest/`.
 
-### 4. Khoi dong cum ha tang Big Data bang Docker
+### 4. Khởi động cụm hạ tầng Big Data qua Docker
 
-Khoi chay cac container dich vu phan tan:
+Khởi chạy đồng thời các container dịch vụ phân tán:
 
 ```bash
 cd docker
 docker-compose up -d
 ```
 
-Cac cong ket noi dich vu:
-* Bang dieu khien Grafana: `http://localhost:3000` (Tai khoan mac dinh: `admin` / `admin`)
-* Giao dien InfluxDB: `http://localhost:8086` (To chuc: `predmaint_org`)
-* Giao dien Spark Master: `http://localhost:8080`
-* Cong ket noi Apache Kafka: `localhost:9092`
+Các cổng giao tiếp dịch vụ:
+* Bảng điều khiển Grafana: `http://localhost:3000` (Tài khoản mặc định: `admin` / `admin`)
+* Giao diện phân tích InfluxDB: `http://localhost:8086` (Tổ chức: `predmaint_org`)
+* Giao diện quản lý Spark Master: `http://localhost:8080`
+* Cổng kết nối Apache Kafka Broker: `localhost:9092`
 
-### 5. Khoi chay Pipeline xu ly Streaming
+### 5. Khởi chạy Pipeline xử lý Streaming
 
-Mo 2 cua so terminal:
+Mở 2 cửa sổ terminal độc lập:
 
-* **Terminal 1: Khoi dong Spark Structured Streaming Consumer**
+* **Terminal 1: Khởi chạy Spark Structured Streaming Consumer**
 ```bash
 source .venv/bin/activate
 python -m src.streaming.stream_pipeline
 ```
 
-* **Terminal 2: Khoi dong Replay Producer phat du lieu cam bien**
+* **Terminal 2: Khởi chạy Replay Producer phát luồng dữ liệu cảm biến**
 ```bash
 source .venv/bin/activate
 python -m src.producer.replay_simulator --rate 50
 ```
 
-### 6. Che do kiem thu cuc bo (Local Verification)
+### 6. Chế độ kiểm thử cục bộ tích hợp (Local Verification)
 
-Doi voi cac may phat trien chua cai dat Docker, he thong cung cap che do kiem thu tich hop san:
+Đối với các máy trạm phát triển chưa khởi động Docker daemon, hệ thống hỗ trợ chế độ chạy mô phỏng tích hợp đầy đủ:
 
 ```bash
 python -m src.streaming.stream_pipeline --local-test
@@ -295,76 +297,76 @@ pytest tests/ -v
 
 ---
 
-## Cau truc du an
+## Cấu trúc dự án
 
 ```text
 predictive-maintenance/
-├── .gitignore                          # Cac file loai tru khoi quan ly phien ban
-├── Makefile                            # Phim tat thuc thi lenh tu dong
-├── README.md                           # Tai lieu ky thuat tieng Anh
-├── README_VN.md                        # Tai lieu ky thuat tieng Viet
-├── requirements.txt                    # Danh sach thu vien Python
+├── .gitignore                          # Cấu hình tệp loại trừ khỏi quản lý phiên bản Git
+├── Makefile                            # Các phím tắt dòng lệnh phục vụ tự động hóa
+├── README.md                           # Tài liệu kỹ thuật tiếng Anh
+├── README_VN.md                        # Tài liệu kỹ thuật tiếng Việt
+├── requirements.txt                    # Danh mục các gói thư viện Python cố định phiên bản
 ├── docker/
-│   ├── docker-compose.yml              # Cau hinh cum Kafka, InfluxDB, Grafana, Spark
+│   ├── docker-compose.yml              # Cấu hình cụm Kafka, InfluxDB, Grafana, Spark
 │   └── grafana/
 │       ├── provisioning/
-│       │   ├── datasources/            # Cau hinh tu dong ket noi InfluxDB Flux
-│       │   └── dashboards/             # Cau hinh provider cho dashboard
+│       │   ├── datasources/            # Tự động hóa liên kết nguồn dữ liệu InfluxDB Flux
+│       │   └── dashboards/             # Tự động hóa nạp cấu hình nhà cung cấp dashboard
 │       └── dashboards/
-│           └── engine_health_dashboard.json # File JSON dashboard giam sat 6 panel
+│           └── engine_health_dashboard.json # Tệp định nghĩa JSON bảng điều khiển 6 panel
 ├── data/
-│   ├── raw/                            # Du lieu NASA C-MAPSS (train, test, RUL)
-│   └── processed/                      # Du lieu dac trung sau khi tien xu ly
+│   ├── raw/                            # Tập dữ liệu gốc NASA C-MAPSS (train, test, RUL)
+│   └── processed/                      # Dữ liệu đặc trưng sau khi xử lý
 ├── models/
-│   ├── latest/                         # Symbolic link tro toi mo hinh san pham
-│   ├── rf_rul_v1.0/                    # Mo hinh Random Forest baseline va metadata
-│   └── xgboost_rul_v1.0/               # Mo hinh XGBoost production va metadata
+│   ├── latest/                         # Liên kết biểu tượng trỏ tới mô hình sản xuất
+│   ├── rf_rul_v1.0/                    # Trọng số mô hình Random Forest và siêu dữ liệu
+│   └── xgboost_rul_v1.0/               # Trọng số mô hình XGBoost sản xuất và siêu dữ liệu
 ├── src/
-│   ├── config.py                       # Tham so cau hinh toan cuc
+│   ├── config.py                       # Tham số cấu hình tập trung toàn hệ thống
 │   ├── common/
-│   │   ├── logger.py                   # Module ghi log co cau truc
-│   │   └── metrics.py                  # Module do luong do tre va throughput
+│   │   ├── logger.py                   # Mô-đun ghi nhật ký có cấu trúc theo ngữ cảnh
+│   │   └── metrics.py                  # Đo lường thông lượng (throughput) và độ trễ
 │   ├── preprocessing/
-│   │   ├── loader.py                   # Parser du lieu C-MAPSS va bo tao du lieu thuc nghiem
-│   │   ├── label_rul.py                # Tinh toan nhan RUL voi piecewise clipping
-│   │   ├── clean.py                    # Loc bo cam bien phuong sai thap va lam sach du lieu
-│   │   └── feature_engineering.py      # Tinh toan dac trung chuoi thoi gian da cua so
+│   │   ├── loader.py                   # Bộ phân tích dữ liệu C-MAPSS và sinh dữ liệu mẫu
+│   │   ├── label_rul.py                # Tính toán nhãn RUL kèm hàm chặn trên piecewise
+│   │   ├── clean.py                    # Loại bỏ cảm biến phương sai thấp và khử trùng lặp
+│   │   └── feature_engineering.py      # Trích xuất đặc trưng chuỗi thời gian đa cửa sổ
 │   ├── training/
-│   │   ├── train_rf.py                 # Module huan luyen Random Forest
-│   │   ├── train_xgboost.py            # Module huan luyen XGBoost
-│   │   ├── evaluate.py                 # Module danh gia (MAE, RMSE, NASA Score)
-│   │   └── export.py                   # Module dong goi mo hinh va metadata
+│   │   ├── train_rf.py                 # Mô-đun huấn luyện Random Forest
+│   │   ├── train_xgboost.py            # Mô-đun huấn luyện XGBoost
+│   │   ├── evaluate.py                 # Đánh giá chỉ số (MAE, RMSE, NASA PHM Score)
+│   │   └── export.py                   # Đóng gói mô hình phiên bản hóa và hợp đồng schema
 │   ├── producer/
-│   │   ├── kafka_producer.py           # Kafka producer voi co che tu dong reconnect
-│   │   └── replay_simulator.py         # Module mo phong stream du lieu da dong co
+│   │   ├── kafka_producer.py           # Kafka Producer với cơ chế tự động kết nối lại
+│   │   └── replay_simulator.py         # Bộ phát mô phỏng luồng cảm biến đan xen chu kỳ
 │   ├── streaming/
-│   │   ├── spark_session.py            # Khoi tao SparkSession toi uu hoa PyArrow
-│   │   ├── alert_engine.py             # Logic tinh Health Score va phan cap canh bao
-│   │   ├── influx_sink.py              # Module ghi du lieu theo batch vao InfluxDB
-│   │   ├── inference_engine.py         # Bo dem truot online va engine suy luan vector hoa
-│   │   └── stream_pipeline.py          # Dinh nghia Spark Structured Streaming pipeline
+│   │   ├── spark_session.py            # Trình khởi tạo SparkSession tối ưu hóa Arrow
+│   │   ├── alert_engine.py             # Tính toán Điểm sức khỏe và phân cấp cảnh báo
+│   │   ├── influx_sink.py              # Bộ ghi vi lô vào cơ sở dữ liệu InfluxDB v2
+│   │   ├── inference_engine.py         # Bộ đệm trượt trực tuyến và suy luận vector hóa
+│   │   └── stream_pipeline.py          # Định nghĩa Spark Structured Streaming pipeline
 │   └── benchmark/
-│       └── benchmark_runner.py         # Runner do luong hieu nang tong the
+│       └── benchmark_runner.py         # Trình điều khiển đo lường hiệu năng tổng thể
 ├── notebooks/
-│   ├── 01_eda_and_sensor_analysis.ipynb # Notebook phan tich kham pha du lieu (EDA)
-│   └── 02_model_experimentation.ipynb  # Notebook thu nghiem va so sanh mo hinh
+│   ├── 01_eda_and_sensor_analysis.ipynb # Phân tích khám phá dữ liệu và trực quan hóa (EDA)
+│   └── 02_model_experimentation.ipynb  # Thử nghiệm huấn luyện và đối sánh mô hình
 └── tests/
-    ├── test_alert_engine.py            # Kiem thu Health Score va phan cap nguong
-    ├── test_preprocessing.py           # Kiem thu tinh RUL va dac trung rolling
-    └── test_producer_simulator.py      # Kiem thu simulator phat du lieu
+    ├── test_alert_engine.py            # Kiểm thử Điểm sức khỏe và ngưỡng phân cấp
+    ├── test_preprocessing.py           # Kiểm thử tính toán RUL và trích xuất đặc trưng
+    └── test_producer_simulator.py      # Kiểm thử bộ phát dữ liệu và chế độ kiểm thử nhanh
 ```
 
 ---
 
-## Kha nang chiu loi va Phuc hoi trang thai
+## Khả năng chịu lỗi và Phục hồi trạng thái
 
-1. **Bao toan State Store**: Spark Structured Streaming luu tru trang thai commit cua tung micro-batch tai thu muc `checkpoints/spark_stream/`. Khi mot node trong cum gap su co hoac he thong khoi dong lai, tien trinh se tiep tuc xu ly tu dung offset da duoc ghi nhan trong Kafka, dam bao tinh toan ven du lieu.
-2. **Co che cach ly bo dem thiet bi**: Bo dem truot cua `src/streaming/inference_engine.py` duoc phan vung doc lap theo ma dinh danh `engine_id`, tranh hien tuong lan lon trang thai giua cac thiet bi khac nhau.
-3. **Kha nang chiu loi ket noi**: Ca hai module `ResilientKafkaProducer` va `InfluxDBSink` deu duoc tich hop co che backoff-and-retry cung che do fallback du phong (`mock_mode`), giup tien trinh streaming khong bi dung khi he thong co so du lieu hoac message broker tam thoi mat ket noi.
+1. **Bảo toàn trạng thái xử lý (State Store Preservation)**: Apache Spark Structured Streaming liên tục ghi nhật ký trạng thái vi lô và vị trí con trỏ đọc tại `checkpoints/spark_stream/`. Khi xảy ra sự cố sập nút tính toán hoặc khởi động lại cụm, tiến trình tự động phục hồi từ đúng offset Kafka đã xác nhận, loại trừ hiện tượng thất thoát hoặc trùng lặp dữ liệu.
+2. **Cách ly bộ nhớ đệm thiết bị (Buffer Isolation)**: Bộ đệm trượt trong `src/streaming/inference_engine.py` được phân đoạn chặt chẽ theo định danh thiết bị (`engine_id`), ngăn chặn triệt để tình trạng xung đột hoặc tràn bộ nhớ giữa các tài sản vật lý khác nhau.
+3. **Bộ chuyển tiếp mạng có khả năng phục hồi (Resilient Sinks)**: Cả hai thành phần `ResilientKafkaProducer` và `InfluxDBSink` đều tích hợp cơ chế trễ hàm mũ (exponential backoff) cùng chế độ dự phòng an toàn (`mock_mode`), bảo đảm luồng xử lý không bị dừng đột ngột khi các cổng dịch vụ bên ngoài gặp gián đoạn tạm thời.
 
 ---
 
-## Tai lieu tham khao
+## Tài liệu tham khảo
 
 1. **A. Saxena, K. Goebel, D. Simon, and N. Eklund**, "Damage Propagation Modeling for Aircraft Engine Run-to-Failure Simulation", in *Proceedings of the 1st International Conference on Prognostics and Health Management (PHM08)*, Denver, CO, Oct. 2008.
 2. **NASA Prognostics Center of Excellence (PCoE)**, "Turbofan Engine Degradation Simulation Data Set", NASA Ames Research Center, Moffett Field, CA.
@@ -373,9 +375,9 @@ predictive-maintenance/
 
 ---
 
-## Trich dan
+## Trích dẫn
 
-De trich dan repository nay trong cac cong bo hoc thuat:
+Để trích dẫn kho lưu trữ này trong các công bố khoa học hoặc tài liệu học thuật:
 
 ```bibtex
 @misc{predictive_maintenance_bigdata_2026,
@@ -389,6 +391,6 @@ De trich dan repository nay trong cac cong bo hoc thuat:
 
 ---
 
-## Giay phep
+## Giấy phép
 
-Du an duoc cap phep duoi Giay phep Apache 2.0. Xem chi tiet tai file [LICENSE](LICENSE).
+Dự án được phân phối dưới các điều khoản của Giấy phép Apache 2.0. Chi tiết xem tại tệp [LICENSE](LICENSE).
