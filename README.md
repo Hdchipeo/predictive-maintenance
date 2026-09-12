@@ -38,6 +38,8 @@
   <a href="#project-structure">Project Structure</a>
   |
   <a href="#references">References</a>
+  |
+  <a href="./README_VN.md">Tiếng Việt</a>
 
 </div>
 
